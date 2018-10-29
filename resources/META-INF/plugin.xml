@@ -44,14 +44,14 @@
         <!-- Add your actions here -->
         <action id="CreateItemFileAction" class="osp.leobert.android.plugin.pandora.CreateVHVOFilesAction"
                 text="Pandora-VhVo"
-                description="Create VO and VH." icon="/fileTemplates/icon.png">
+                description="Create VO and VH." icon="/fileTemplates/icon_16.png">
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="before"/>
         </action>
     </actions>
 
     <actions>
-        <action id="MultiType" class="osp.leobert.android.plugin.pandora.CreateInnerItemCodesAction"
-                text="ViewHolder">
+        <action id="Pandora" class="osp.leobert.android.plugin.pandora.CreateInnerItemCodesAction"
+                text="Pandora-VhVo">
             <add-to-group group-id="GenerateGroup"/>
         </action>
     </actions>
