@@ -35,10 +35,11 @@ public final class XmlLayoutUtils {
     public static String createLayoutFileName(PsiClass clazz) {
         try {
             String clzName = clazz.getName();
-            Pattern pattern = Pattern.compile(".*VH2");
-            Matcher matcher = pattern.matcher(clzName);
+            if (clzName != null && clzName.endsWith("VH2")) {
+                clzName = clzName.substring(0, clzName.length() - 3);
+            }
 
-            return "app_vh_" + CaseFormat.UPPER_CAMEL.to(LOWER_UNDERSCORE, matcher.group());
+            return "app_vh_" + CaseFormat.UPPER_CAMEL.to(LOWER_UNDERSCORE, clzName);
         } catch (Exception e) {
             e.printStackTrace();
             return "app_vh_" + System.currentTimeMillis();
