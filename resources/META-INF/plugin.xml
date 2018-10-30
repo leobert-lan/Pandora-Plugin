@@ -42,7 +42,7 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="CreateItemFileAction" class="osp.leobert.android.plugin.pandora.CreateVHVOFilesAction"
+        <action id="CreateItemFileAction" class="osp.leobert.android.plugin.pandora.action.CreateVHVOFilesAction"
                 text="Pandora-VhVo"
                 description="Create VO and VH." icon="/fileTemplates/icon_16.png">
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="before"/>
@@ -50,10 +50,16 @@
     </actions>
 
     <actions>
-        <action id="Pandora" class="osp.leobert.android.plugin.pandora.CreateInnerItemCodesAction"
+        <action id="Pandora" class="osp.leobert.android.plugin.pandora.action.CreateInnerItemCodesAction"
                 text="Pandora-VhVo">
             <add-to-group group-id="GenerateGroup"/>
         </action>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <intentionAction order="first">
+            <className>osp.leobert.android.plugin.pandora.intention.GenerateLayoutIntention</className>
+        </intentionAction>
+    </extensions>
 
 </idea-plugin>

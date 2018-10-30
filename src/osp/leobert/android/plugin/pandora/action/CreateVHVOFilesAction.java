@@ -1,10 +1,9 @@
-package osp.leobert.android.plugin.pandora;
+package osp.leobert.android.plugin.pandora.action;
 
 import com.google.common.base.CaseFormat;
 import com.intellij.ide.IdeBundle;
 import com.intellij.ide.actions.CreateFileFromTemplateDialog;
 import com.intellij.ide.actions.JavaCreateTemplateInPackageAction;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.DumbAware;

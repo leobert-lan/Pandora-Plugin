@@ -12,7 +12,7 @@ public class CreateInnerCodesDialog extends JDialog {
     private JCheckBox onlyItemViewBinderCheckBox;
 
 
-    CreateInnerCodesDialog() {
+    public CreateInnerCodesDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);

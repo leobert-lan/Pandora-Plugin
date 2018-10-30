@@ -1,4 +1,4 @@
-package osp.leobert.android.plugin.pandora;
+package osp.leobert.android.plugin.pandora.action;
 
 import com.google.common.base.CaseFormat;
 import com.intellij.codeInsight.CodeInsightActionHandler;
@@ -13,6 +13,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
+import osp.leobert.android.plugin.pandora.CreateInnerCodesDialog;
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
@@ -26,7 +27,7 @@ import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
  */
 public class CreateInnerItemCodesAction extends BaseGenerateAction implements CreateInnerCodesDialog.OnOKListener {
 
-    private boolean and;
+//    private boolean and;
     private CreateInnerCodesDialog dialog;
     private PsiFile psiFile;
     private Editor editor;
