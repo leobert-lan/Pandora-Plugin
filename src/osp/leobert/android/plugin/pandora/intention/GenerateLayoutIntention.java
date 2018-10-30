@@ -116,11 +116,10 @@ public class GenerateLayoutIntention extends GenericIntention {
             return;
         }
         try {
-            // TODO: 2018/10/30 change name
-//            Properties properties = new Properties();
-//            properties.setProperty("NAMESPACE", clazz.getQualifiedName());
+            HintManager.getInstance().showInformationHint(editor, "Info: className is: " + clazz.getName());
+            String name = XmlLayoutUtils.createLayoutFileName(clazz);
             PsiElement psiFile = XmlLayoutUtils.createLayoutFileFromFileTemplate(LayoutFileTemplateDescriptorFactory.LAYOUT_XML_TEMPLATE,
-                    clazz.getName(), directory, null);
+                    name, directory, null);
             EditorService.getInstance(clazz.getProject()).scrollTo(psiFile, 0);
         } catch (Exception e) {
             HintManager.getInstance().showErrorHint(editor, "Failed: " + e.getCause());
