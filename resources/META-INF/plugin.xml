@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.your.company.unique.plugin.id</id>
     <name>Pandora-VhVo-Generator</name>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <vendor email="leobert.l@hotmail.com" url="https://github.com/leobert-lan">Leobert</vendor>
 
     <description><![CDATA[
@@ -10,7 +10,7 @@
       <li>Generate VH class</li>
       <li>Generate inner class ItemInteract in VH</li>
       <li>Generate inner class Creator in VH</li>
-      <li>TODO:Generate xml layout file of VH</li>
+      <li>Generate xml layout file of VH via intent action</li>
     ]]></description>
 
     <change-notes><![CDATA[
