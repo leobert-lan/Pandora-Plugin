@@ -55,31 +55,61 @@ public class GenerateLayoutIntention extends GenericIntention {
     public void invoke(@NotNull final Project project, final Editor editor, PsiFile file) throws IncorrectOperationException {
         PsiElement element = file.findElementAt(editor.getCaretModel().getOffset());
         PsiClass clazz = PsiTreeUtil.getParentOfType(element, PsiClass.class);
-        handleChooseNewFolder(project, editor, clazz);
+        handleChooseNewFolder(project, editor, clazz, file);
     }
 
-    private ClickableListener getChooseFolderListener(final Editor editor, final PsiClass clazz) {
-        final Project project = clazz.getProject();
-        return new ClickableListener() {
-            @Override
-            public void clicked() {
-                handleChooseNewFolder(project, editor, clazz);
-            }
+//    private ClickableListener getChooseFolderListener(final Editor editor, final PsiClass clazz) {
+//        final Project project = clazz.getProject();
+//        return new ClickableListener() {
+//            @Override
+//            public void clicked() {
+//                handleChooseNewFolder(project, editor, clazz);
+//            }
+//
+//            @Override
+//            public boolean isWriteAction() {
+//                return false;
+//            }
+//        };
+//    }
 
-            @Override
-            public boolean isWriteAction() {
-                return false;
-            }
-        };
-    }
-
-    private void handleChooseNewFolder(Project project, Editor editor, PsiClass clazz) {
+    private void handleChooseNewFolder(Project project, Editor editor, PsiClass clazz, PsiFile operatingFile) {
         UiComponentFacade uiComponentFacade = UiComponentFacade.getInstance(project);
         VirtualFile baseDir = project.getBaseDir();
+
+        baseDir = findAndroidResDir(baseDir, operatingFile);
+
         VirtualFile vf = uiComponentFacade.showSingleFolderSelectionDialog("Select target folder", baseDir, baseDir);
         if (null != vf) {
             processGenerate(editor, clazz, PsiManager.getInstance(project).findDirectory(vf));
         }
+    }
+
+    private VirtualFile findAndroidResDir(VirtualFile projectBaseDir, PsiFile operatingFile) {
+        VirtualFile tmp = operatingFile.getVirtualFile();
+        final String DIR_MAIN = "main";
+        final String DIR_BASE = projectBaseDir.getName();
+        boolean findMainDir = false;
+
+        while (tmp.getParent() != null) {
+            tmp = tmp.getParent();
+            if ("/".equals(tmp.getName()) || DIR_BASE.equals(tmp.getName())) {
+                findMainDir = false;
+                break;
+            }
+
+            if (DIR_MAIN.equals(tmp.getName())) {
+                findMainDir = true;
+                break;
+            }
+        }
+        if (findMainDir) {
+            VirtualFile res = tmp.findChild("res");
+            if (res != null)
+                return res;
+        }
+
+        return projectBaseDir;
     }
 
     private String[] getPathTextForShown(Project project, List<String> paths, final Map<String, PsiDirectory> pathMap) {
