@@ -10,13 +10,19 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import osp.leobert.android.plugin.pandora.CreateInnerCodesDialog;
+import osp.leobert.android.plugin.pandora.util.Properties;
+import osp.leobert.android.plugin.pandora.util.Utils;
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_NAME;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_PACKAGE;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
 
 /**
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora </p>
@@ -27,7 +33,6 @@ import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
  */
 public class CreateInnerItemCodesAction extends BaseGenerateAction implements CreateInnerCodesDialog.OnOKListener {
 
-//    private boolean and;
     private CreateInnerCodesDialog dialog;
     private PsiFile psiFile;
     private Editor editor;
@@ -64,29 +69,51 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
         new CodeWriter(typeName, onlyBinder, psiFile, getTargetClass(editor, psiFile)).execute();
     }
 
-
     private class CodeWriter extends WriteCommandAction.Simple {
 
         private final Project project;
         private final PsiClass clazz;
         private final PsiElementFactory factory;
         private final String typeName;
-        private final boolean onlyBinder;
+        private final boolean onlyViewHolder;
+        private final PsiFile psiFile;
 
 
-        CodeWriter(String typeName, boolean onlyBinder, PsiFile psiFile, PsiClass clazz) {
+        CodeWriter(String typeName, boolean onlyViewHolder, PsiFile psiFile, PsiClass clazz) {
             super(clazz.getProject(), "");
             this.typeName = typeName;
-            this.onlyBinder = onlyBinder;
+            this.onlyViewHolder = onlyViewHolder;
             this.clazz = clazz;
             this.project = clazz.getProject();
             this.factory = JavaPsiFacade.getElementFactory(project);
+            this.psiFile = psiFile;
         }
 
 
         @Override
         protected void run() throws Throwable {
-            if (!onlyBinder) {
+
+            try {
+                VirtualFile projectFolder = getModuleDir(psiFile);
+                if (projectFolder != null) {
+                    Properties configProp = parseConfig(projectFolder);
+                    if (configProp != null) {
+                        rPackage = configProp.getProperty(CONF_R_PACKAGE,
+                                "com.jdd.motorfans");
+
+                        baseVhPackage = configProp.getProperty(CONF_BASE_VH_PACKAGE,
+                                "com.jdd.motorfans.common.base.adapter.vh2");
+
+                        baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
+                                "AbsViewHolder2");
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (!onlyViewHolder) {
                 createViewObjectInterface();
             }
             createViewHolderClass();
@@ -97,9 +124,20 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
             new ReformatCodeProcessor(project, clazz.getContainingFile(), null, false).runWithoutProgress();
         }
 
+        private VirtualFile getModuleDir(PsiFile directory) {
+            return Utils.getModuleDir(directory.getParent());
+        }
+
+        private Properties parseConfig(VirtualFile moduleDir) {
+            return Utils.parseConfig(moduleDir);
+        }
+
 
         private void createViewObjectInterface() {
             PsiClass innerVoInterface = createInnerClassFromText(INNER_VO_TEMPLATE
+                    .replace(CONF_R_PACKAGE, rPackage) //useless
+                    .replace(CONF_BASE_VH_PACKAGE,baseVhPackage)
+                    .replace(CONF_BASE_VH_NAME,baseVhName)
                     .replace("${NAME}VO", typeName + "VO2"), clazz);
             makePublicStatic(innerVoInterface);
 
@@ -107,10 +145,18 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
         }
 
 
+        private String rPackage;
+        private String baseVhPackage;
+        private String baseVhName;
+
+
         private void createViewHolderClass() {
             PsiClass innerVhClass = createInnerClassFromText(INNER_VH_TEMPLATE
                     .replace("${NAME}VH", typeName + "VH2")
                     .replace("${NAME}VO", typeName + "VO2")
+                    .replace(CONF_R_PACKAGE, rPackage)
+                    .replace(CONF_BASE_VH_PACKAGE,baseVhPackage)
+                    .replace(CONF_BASE_VH_NAME,baseVhName)
                     .replace("VHVO_PREFIXCLASS", typeName)
                     .replace("VHVO_PREFIXLOWER_NAME", CaseFormat.UPPER_CAMEL.to(LOWER_UNDERSCORE, typeName))
                     .replace("VHVO_PREFIXNAME", CaseFormat.UPPER_CAMEL.to(LOWER_CAMEL, typeName)), clazz);
@@ -135,12 +181,12 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
         }
 
         private final String INNER_VO_TEMPLATE =
-                "public interface ${NAME}VO extends DataSet.Data<DataSet.Data, AbsViewHolder2<DataSet.Data>> {\n" +
+                "public interface ${NAME}VO extends DataSet.Data<DataSet.Data, BASE_VH_NAME<DataSet.Data>> {\n" +
                         "\n" +
                         "}";
 
         private final String INNER_VH_TEMPLATE =
-                "public static class ${NAME}VH extends AbsViewHolder2<${NAME}VO> {\n" +
+                "public static class ${NAME}VH extends BASE_VH_NAME<${NAME}VO> {\n" +
                         "    private final ${NAME}VH.ItemInteract mItemInteract;\n" +
                         "\n" +
                         "    private ${NAME}VO mData;\n" +
@@ -168,7 +214,7 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
                         "        }\n" +
                         "\n" +
                         "        @Override\n" +
-                        "        public AbsViewHolder2<${NAME}VO> createViewHolder(ViewGroup parent) {\n" +
+                        "        public BASE_VH_NAME<${NAME}VO> createViewHolder(ViewGroup parent) {\n" +
                         "            View view = LayoutInflater.from(parent.getContext())\n" +
                         "                    .inflate(R.layout.app_vh_VHVO_PREFIXLOWER_NAME, parent, false);\n" +
                         "            return new ${NAME}VH(view, itemInteract);\n" +

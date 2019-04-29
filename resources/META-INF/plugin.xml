@@ -11,10 +11,36 @@
       <li>Generate inner class ItemInteract in VH</li>
       <li>Generate inner class Creator in VH</li>
       <li>Generate xml layout file of VH via intent action</li>
+      <li>Support config some core information for template.
+       Define a direction in the module folder named "pandora",
+       and touch a file named "config.properties".
+
+       e.g.:$projectdir$/app/pandora/config.properties
+
+           <ul>
+                <li>
+                    add R_PACKAGE configuration for the package of R class.
+
+                    e.g.:R_PACKAGE=osp.leobert.android.myapplication
+                </li>
+                <li>
+                    add BASE_VH_PACKAGE configuration for the package of BaseViewHolder.
+
+                    e.g.:osp.leobert.android.myapplication.widget
+                </li>
+                <li>
+                    add BASE_VH_NAME configuration for the name of the BaseViewHolder.
+
+                    e.g.BASE_VH_NAME=BaseViewHolder
+                </li>
+           </ul>
+       </li>
+
+
     ]]></description>
 
     <change-notes><![CDATA[
-      First version
+      1.0.2:add config supporting
     ]]>
     </change-notes>
 

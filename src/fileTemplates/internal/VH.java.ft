@@ -4,14 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jdd.motorfans.R;
-import com.jdd.motorfans.common.base.adapter.vh2.AbsViewHolder2;
+import R_PACKAGE.R;
+import BASE_VH_PACKAGE.BASE_VH_NAME;
 
 import osp.leobert.android.pandora.rv.ViewHolderCreator;
 
 
 #parse("File Header.java")
-public class ${NAME}VH2 extends AbsViewHolder2<${NAME}VO2> {
+public class ${NAME}VH2 extends BASE_VH_NAME<${NAME}VO2> {
     private final ${NAME}VH2.ItemInteract mItemInteract;
 
     private ${NAME}VO2 mData;
@@ -31,15 +31,14 @@ public class ${NAME}VH2 extends AbsViewHolder2<${NAME}VO2> {
     }
 
     public static final class Creator extends ViewHolderCreator {
-        private final ${NAME}VH2.
-                ItemInteract itemInteract;
+        private final ${NAME}VH2.ItemInteract itemInteract;
 
         public Creator(${NAME}VH2.ItemInteract itemInteract) {
             this.itemInteract = itemInteract;
         }
 
         @Override
-        public AbsViewHolder2<${NAME}VO2> createViewHolder(ViewGroup parent) {
+        public BASE_VH_NAME<${NAME}VO2> createViewHolder(ViewGroup parent) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.app_vh_VHVO_PREFIXLOWER_NAME, parent, false);
             return new ${NAME}VH2(view, itemInteract);

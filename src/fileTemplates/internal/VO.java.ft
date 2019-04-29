@@ -1,11 +1,11 @@
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
 
 
-import com.jdd.motorfans.common.base.adapter.vh2.AbsViewHolder2;
+import BASE_VH_PACKAGE.BASE_VH_NAME;
 
 import osp.leobert.android.pandora.rv.DataSet;
 
 #parse("File Header.java")
-public interface ${NAME}VO2 extends DataSet.Data<DataSet.Data, AbsViewHolder2<DataSet.Data>> {
+public interface ${NAME}VO2 extends DataSet.Data<DataSet.Data, BASE_VH_NAME<DataSet.Data>> {
 
 }

@@ -10,16 +10,20 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.InputValidatorEx;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NotNull;
+import osp.leobert.android.plugin.pandora.util.Properties;
+import osp.leobert.android.plugin.pandora.util.Utils;
 
 import java.util.Map;
 
 import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
+import static osp.leobert.android.plugin.pandora.util.Utils.*;
 
 /**
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora </p>
@@ -34,8 +38,8 @@ public class CreateVHVOFilesAction extends JavaCreateTemplateInPackageAction<Psi
     private static final String VO_TEMPLATE_NAME = "VO";
     private static final String VIEW_HOLDER_TEMPLATE_NAME = "VH";
 
-    public static final String VO_AND_VIEW_HOLDER = "VO & ViewHolder";
-    public static final String ONLY_VIEW_HOLDER = "Only ViewHolder";
+    private static final String VO_AND_VIEW_HOLDER = "VO & ViewHolder";
+    private static final String ONLY_VIEW_HOLDER = "Only ViewHolder";
 
 
     public CreateVHVOFilesAction() {
@@ -74,6 +78,15 @@ public class CreateVHVOFilesAction extends JavaCreateTemplateInPackageAction<Psi
         });
     }
 
+    private VirtualFile getModuleDir(PsiDirectory directory) {
+        return Utils.getModuleDir(directory);
+    }
+
+
+    private Properties parseConfig(VirtualFile moduleDir) {
+        return Utils.parseConfig(moduleDir);
+    }
+
 
     @Override
     protected String removeExtension(String templateName, String className) {
@@ -103,16 +116,45 @@ public class CreateVHVOFilesAction extends JavaCreateTemplateInPackageAction<Psi
     protected final PsiClass doCreate(PsiDirectory dir, String className, String templateName)
             throws IncorrectOperationException {
         PsiClass result = createClass(dir, className, VIEW_HOLDER_TEMPLATE_NAME);
+        initConfig(dir);
+
         if (templateName.equals(VO_AND_VIEW_HOLDER)) {
-            createClass(dir, className, VO_TEMPLATE_NAME);
+            PsiClass voClass = createClass(dir, className, VO_TEMPLATE_NAME);
+            injectConfigIntoTemplateClass(dir, className, voClass);
         }
 
-        onProcessItemViewBinder(dir, className, result);
+        injectConfigIntoTemplateClass(dir, className, result);
         return result;
     }
 
+    private void initConfig(final PsiDirectory dir) {
+        try {
+            VirtualFile projectFolder = getModuleDir(dir);
+            if (projectFolder != null) {
+                Properties configProp = parseConfig(projectFolder);
+                if (configProp != null) {
+                    rPackage = configProp.getProperty(CONF_R_PACKAGE,
+                            "com.jdd.motorfans");
 
-    private void onProcessItemViewBinder(final PsiDirectory dir, final String typeName, final PsiClass itemClass) {
+                    baseVhPackage = configProp.getProperty(CONF_BASE_VH_PACKAGE,
+                            "com.jdd.motorfans.common.base.adapter.vh2");
+
+                    baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
+                            "AbsViewHolder2");
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private String rPackage;
+    private String baseVhPackage;
+    private String baseVhName;
+
+    private void injectConfigIntoTemplateClass(PsiDirectory dir, final String typeName, final PsiClass itemClass) {
         PsiFile file = itemClass.getContainingFile();
         final PsiDocumentManager manager = PsiDocumentManager.getInstance(itemClass.getProject());
         final Document document = manager.getDocument(file);
@@ -120,14 +162,18 @@ public class CreateVHVOFilesAction extends JavaCreateTemplateInPackageAction<Psi
             return;
         }
 
+
         new WriteCommandAction.Simple(itemClass.getProject()) {
             @Override
             protected void run() throws Throwable {
                 manager.doPostponedOperationsAndUnblockDocument(document);
                 document.setText(document.getText()
-                        .replace("VHVO_PREFIXCLASS", typeName)
-                        .replace("VHVO_PREFIXLOWER_NAME", CaseFormat.UPPER_CAMEL.to(LOWER_UNDERSCORE, typeName))
-                        .replace("VHVO_PREFIXNAME", CaseFormat.UPPER_CAMEL.to(LOWER_CAMEL, typeName)));
+                        .replace(CONF_R_PACKAGE, rPackage)
+                        .replace(CONF_BASE_VH_PACKAGE, baseVhPackage)
+                        .replace(CONF_BASE_VH_NAME, baseVhName)
+                        .replace("VHVO_PREFIXCLASS", typeName) //useless
+                        .replace("VHVO_PREFIXLOWER_NAME", CaseFormat.UPPER_CAMEL.to(LOWER_UNDERSCORE, typeName)) //useless
+                        .replace("VHVO_PREFIXNAME", CaseFormat.UPPER_CAMEL.to(LOWER_CAMEL, typeName))); // useless
                 CodeStyleManager.getInstance(itemClass.getProject()).reformat(itemClass);
             }
         }.execute();
@@ -149,6 +195,7 @@ public class CreateVHVOFilesAction extends JavaCreateTemplateInPackageAction<Psi
 
 
     private PsiClass createClass(@NotNull PsiDirectory dir, @NotNull String className, @NotNull String templateName) {
-        return JavaDirectoryService.getInstance().createClass(dir, className, templateName);
+        return JavaDirectoryService.getInstance().
+                createClass(dir, className, templateName);
     }
 }
