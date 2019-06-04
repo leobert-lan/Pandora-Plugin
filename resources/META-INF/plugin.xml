@@ -68,9 +68,15 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="CreateItemFileAction" class="osp.leobert.android.plugin.pandora.action.CreateVHVOFilesAction"
+        <action id="CreateItemFileAction" class="osp.leobert.android.plugin.pandora.action.CreateJavaVHVOFilesAction"
                 text="Pandora-VhVo"
                 description="Create VO and VH." icon="/fileTemplates/icon_16.png">
+            <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="before"/>
+        </action>
+
+        <action id="CreateKtItemFileAction" class="osp.leobert.android.plugin.pandora.action.CreateKotlinVHVOFilesAction"
+            text="Pandora-kt-VhVo"
+            description="Create VO and VH." icon="/fileTemplates/icon_16.png">
             <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="before"/>
         </action>
     </actions>
@@ -85,6 +91,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <intentionAction order="first">
             <className>osp.leobert.android.plugin.pandora.intention.GenerateLayoutIntention</className>
+        </intentionAction>
+
+        <intentionAction order="first">
+            <className>osp.leobert.android.plugin.pandora.intention.GenerateKtDataBindingLayoutIntention</className>
         </intentionAction>
     </extensions>
 

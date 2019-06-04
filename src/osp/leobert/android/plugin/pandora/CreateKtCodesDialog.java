@@ -1,9 +1,19 @@
 package osp.leobert.android.plugin.pandora;
 
-import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class CreateInnerCodesDialog extends JDialog {
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+
+public class CreateKtCodesDialog extends JDialog {
 
     private JPanel contentPane;
     private JButton buttonOK;
@@ -12,12 +22,11 @@ public class CreateInnerCodesDialog extends JDialog {
     private JCheckBox onlyItemViewBinderCheckBox;
     private JRadioButton kotlinRadioButton;
     private JRadioButton useKotlinAndKtPandoraRadioButton;
-    private JRadioButton javaRadioButton;
 
-    private Integer type = 0;
+    private Integer type = 1;
 
 
-    public CreateInnerCodesDialog() {
+    public CreateKtCodesDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -31,9 +40,6 @@ public class CreateInnerCodesDialog extends JDialog {
                 onCancel();
             }
         });
-
-        javaRadioButton.setSelected(true);
-        javaRadioButton.addActionListener(e-> type = 0);
         kotlinRadioButton.addActionListener(e -> type = 1);
         useKotlinAndKtPandoraRadioButton.addActionListener(
                 e-> type = 2
@@ -42,6 +48,9 @@ public class CreateInnerCodesDialog extends JDialog {
         contentPane.registerKeyboardAction(e -> onCancel(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        kotlinRadioButton.setSelected(true);
+        contentPane.requestFocus();
     }
 
 
@@ -50,7 +59,7 @@ public class CreateInnerCodesDialog extends JDialog {
 
 
     public interface OnOKListener {
-        void onOK(String text, boolean and,int type);
+        void onOK(String text, boolean and, int type);
     }
 
 
@@ -78,7 +87,7 @@ public class CreateInnerCodesDialog extends JDialog {
 
 
     public static void main(String[] args) {
-        CreateInnerCodesDialog dialog = new CreateInnerCodesDialog();
+        CreateKtCodesDialog dialog = new CreateKtCodesDialog();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);

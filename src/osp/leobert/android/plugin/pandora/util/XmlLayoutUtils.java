@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
+import com.intellij.ide.fileTemplates.impl.CustomFileTemplate;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
@@ -32,11 +33,37 @@ public final class XmlLayoutUtils {
         return FileTemplateUtil.createFromTemplate(fileTemplate, fileName, pops, directory);
     }
 
+    public static PsiElement createLayoutFileFromText(@NotNull String text,
+                                                              @NotNull String fileName,
+                                                              @NotNull PsiDirectory directory,
+                                                              @Nullable Properties pops) throws Exception {
+//        FileTemplate fileTemplate = FileTemplateManager.getDefaultInstance().getInternalTemplate(fileTemplateName);
+
+        CustomFileTemplate template = new CustomFileTemplate("foo.xml","ft");
+        template.setText(text);
+
+        return FileTemplateUtil.createFromTemplate(template, fileName, pops, directory);
+    }
+
     public static String createLayoutFileName(PsiClass clazz) {
         try {
             String clzName = clazz.getName();
             if (clzName != null && clzName.endsWith("VH2")) {
                 clzName = clzName.substring(0, clzName.length() - 3);
+            }
+
+            return "app_vh_" + CaseFormat.UPPER_CAMEL.to(LOWER_UNDERSCORE, clzName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "app_vh_" + System.currentTimeMillis();
+        }
+    }
+
+    public static String createLayoutFileName2(PsiClass clazz) {
+        try {
+            String clzName = clazz.getName();
+            if (clzName != null && clzName.endsWith("VHCreator")) {
+                clzName = clzName.substring(0, clzName.length() - 9);
             }
 
             return "app_vh_" + CaseFormat.UPPER_CAMEL.to(LOWER_UNDERSCORE, clzName);

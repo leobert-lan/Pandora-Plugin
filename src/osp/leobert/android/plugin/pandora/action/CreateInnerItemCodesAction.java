@@ -65,7 +65,7 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
 
 
     @Override
-    public void onOK(String typeName, boolean onlyBinder) {
+    public void onOK(String typeName, boolean onlyBinder,int type) {
         new CodeWriter(typeName, onlyBinder, psiFile, getTargetClass(editor, psiFile)).execute();
     }
 
@@ -117,6 +117,8 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
                 createViewObjectInterface();
             }
             createViewHolderClass();
+
+
             // reformat class
             JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
             styleManager.optimizeImports(psiFile);

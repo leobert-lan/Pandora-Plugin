@@ -11,19 +11,30 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.InputValidatorEx;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaDirectoryService;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.PsiNameHelper;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
+
 import org.jetbrains.annotations.NotNull;
-import osp.leobert.android.plugin.pandora.util.Properties;
-import osp.leobert.android.plugin.pandora.util.Utils;
 
 import java.util.Map;
 
+import osp.leobert.android.plugin.pandora.util.Properties;
+import osp.leobert.android.plugin.pandora.util.Utils;
+
 import static com.google.common.base.CaseFormat.LOWER_CAMEL;
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
-import static osp.leobert.android.plugin.pandora.util.Utils.*;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_NAME;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_PACKAGE;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
 
 /**
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora </p>
@@ -32,7 +43,7 @@ import static osp.leobert.android.plugin.pandora.util.Utils.*;
  * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2018/10/29.
  */
-public class CreateVHVOFilesAction extends JavaCreateTemplateInPackageAction<PsiClass>
+public class CreateJavaVHVOFilesAction extends JavaCreateTemplateInPackageAction<PsiClass>
         implements DumbAware {
 
     private static final String VO_TEMPLATE_NAME = "VO";
@@ -41,8 +52,7 @@ public class CreateVHVOFilesAction extends JavaCreateTemplateInPackageAction<Psi
     private static final String VO_AND_VIEW_HOLDER = "VO & ViewHolder";
     private static final String ONLY_VIEW_HOLDER = "Only ViewHolder";
 
-
-    public CreateVHVOFilesAction() {
+    public CreateJavaVHVOFilesAction() {
         super("", IdeBundle.message("action.create.new.class.description"), PlatformIcons.CLASS_ICON, true);
     }
 
@@ -122,6 +132,7 @@ public class CreateVHVOFilesAction extends JavaCreateTemplateInPackageAction<Psi
             PsiClass voClass = createClass(dir, className, VO_TEMPLATE_NAME);
             injectConfigIntoTemplateClass(dir, className, voClass);
         }
+
 
         injectConfigIntoTemplateClass(dir, className, result);
         return result;

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<layout>
+    <data>
+        <variable name="vo"
+            type="PACKAGE.PREFIXVO2" />
+
+        <variable name="itemInteract"
+            type="PACKAGE.PREFIXItemInteract" />
+
+        <variable name="vh"
+            type="BASE_KT_VH_PACKAGE.BASE_KT_VH_NAME" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- android:onClick="@{(view)->itemInteract.changeData(vh.getAdapterPosition(),item)}"-->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="PREFIX" />
+    </FrameLayout>
+</layout>

@@ -9,6 +9,7 @@ import osp.leobert.android.plugin.pandora.util.Icons;
 public class LayoutFileTemplateDescriptorFactory implements FileTemplateGroupDescriptorFactory {
 
   public static final String LAYOUT_XML_TEMPLATE = "vh_layout.xml";
+  public static final String DATA_BINDING_LAYOUT_XML_TEMPLATE = "data_binding_vh_layout.xml";
 
   @Override
   public FileTemplateGroupDescriptor getFileTemplatesDescriptor() {

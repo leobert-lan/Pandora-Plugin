@@ -1,7 +1,9 @@
 package osp.leobert.android.plugin.pandora.util;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiManager;
 
 import java.io.File;
 
@@ -17,6 +19,8 @@ public class Utils {
     public static final String CONF_R_PACKAGE = "R_PACKAGE";
     public static final String CONF_BASE_VH_PACKAGE = "BASE_VH_PACKAGE";
     public static final String CONF_BASE_VH_NAME = "BASE_VH_NAME";
+    public static final String CONF_BASE_KT_VH_PACKAGE = "BASE_KT_VH_PACKAGE";
+    public static final String CONF_BASE_KT_VH_NAME = "BASE_KT_VH_NAME";
 
     public static VirtualFile getModuleDir(PsiDirectory directory) {
         if (directory == null) return null;
@@ -57,6 +61,21 @@ public class Utils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static PsiDirectory getDefaultLayoutRes(VirtualFile moduleDir, Project project) {
+        if (moduleDir == null) return null;
+
+        VirtualFile srcFile = moduleDir.findChild("src");
+        if (srcFile == null) return null;
+
+        VirtualFile resFile = moduleDir.findChild("res");
+        if (resFile == null) return null;
+
+        VirtualFile layoutFile = moduleDir.findChild("layout");
+        if (layoutFile == null) return null;
+
+        return PsiManager.getInstance(project).findDirectory(layoutFile);
     }
 
 }
