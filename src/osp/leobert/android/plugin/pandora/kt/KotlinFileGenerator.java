@@ -18,7 +18,7 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
     public static final String vh_import = "import android.view.LayoutInflater\n" +
             "import android.view.ViewGroup\n" +
             "import androidx.databinding.DataBindingUtil\n" +
-            "import BASE_VH_PACKAGE.databinding.AppVh${NAME}Binding\n" +
+            "import WIDGET_PACKAGE.databinding.AppVh${NAME}Binding\n" +
             "import osp.leobert.android.pandora.rv.ViewHolderCreator\n"+
             "import R_PACKAGE.R\n" +
             "import BASE_KT_VH_PACKAGE.BASE_KT_VH_NAME\n";
