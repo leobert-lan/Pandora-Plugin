@@ -14,13 +14,17 @@ public class Model {
     public final String rPackage;
     public final String baseVhPackage;
     public final String baseVhName;
+    public final String baseKtVhPackage;
+    public final String baseKtVhName;
 
-    public Model(String prefix, boolean onlyVh, String rPackage, String baseVhPackage, String baseVhName) {
+    public Model(String prefix, boolean onlyVh, String rPackage, String baseVhPackage, String baseVhName, String baseKtVhPackage, String baseKtVhName) {
         this.prefix = prefix;
         this.onlyVh = onlyVh;
         this.rPackage = rPackage;
         this.baseVhPackage = baseVhPackage;
         this.baseVhName = baseVhName;
+        this.baseKtVhPackage = baseKtVhPackage;
+        this.baseKtVhName = baseKtVhName;
     }
 
 }

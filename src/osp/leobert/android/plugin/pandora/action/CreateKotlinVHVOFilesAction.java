@@ -30,6 +30,8 @@ import osp.leobert.android.plugin.pandora.kt.SourceFilesGenerator;
 import osp.leobert.android.plugin.pandora.util.Properties;
 import osp.leobert.android.plugin.pandora.util.Utils;
 
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_NAME;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_PACKAGE;
 import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_NAME;
 import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_PACKAGE;
 import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
@@ -109,6 +111,12 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
 
                     baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
                             "AbsViewHolder2");
+
+                    baseKtVhPackage = configProp.getProperty(CONF_BASE_KT_VH_PACKAGE,
+                            "com.jdd.motorfans.common.base.adapter.vh2");
+
+                    baseKtVhName = configProp.getProperty(CONF_BASE_KT_VH_NAME,
+                            "AbsViewHolder2");
                 }
             }
 
@@ -121,6 +129,8 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
     private String rPackage;
     private String baseVhPackage;
     private String baseVhName;
+    private String baseKtVhPackage;
+    private String baseKtVhName;
 
 
     @Override
@@ -151,7 +161,7 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
         SourceFilesGenerator generator;
 
         //String rPackage, String baseVhPackage, String baseVhName
-        Model model = new Model(text, onlyVh, rPackage, baseVhPackage, baseVhName);
+        Model model = new Model(text, onlyVh, rPackage, baseVhPackage, baseVhName, baseKtVhPackage, baseKtVhName);
         generator = new SingleFileGenerator(text + "Widget.kt", fileSaver);
 
         generator.setListener(filesCount -> {

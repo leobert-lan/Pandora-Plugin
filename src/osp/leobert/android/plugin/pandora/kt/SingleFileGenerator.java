@@ -6,6 +6,8 @@ import com.google.common.base.CaseFormat;
 import java.util.List;
 
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_NAME;
+import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_PACKAGE;
 import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_NAME;
 import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_PACKAGE;
 import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
@@ -64,6 +66,16 @@ public class SingleFileGenerator extends KotlinFileGenerator {
         else
             tmp = tmp.concat("\n\n baseVhName is null");
         //}
+
+        if (model.baseKtVhPackage != null)
+            tmp = tmp.replace(CONF_BASE_KT_VH_PACKAGE, model.baseKtVhPackage);
+        else
+            tmp = tmp.concat("\n\n baseKtVhPackage is null");
+
+        if (model.baseKtVhName != null)
+            tmp = tmp.replace(CONF_BASE_KT_VH_NAME, model.baseKtVhName);
+        else
+            tmp = tmp.concat("\n\n baseKtVhName is null");
 
 
         fileSaver.saveFile(fileName, tmp);
