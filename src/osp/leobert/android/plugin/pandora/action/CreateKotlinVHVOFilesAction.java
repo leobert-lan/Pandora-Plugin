@@ -40,7 +40,6 @@ import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora </p>
  * <p><b>Project:</b> Pandora-Plugin </p>
  * <p><b>Classname:</b> CreateVOFilesAction </p>
- * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2018/10/29.
  */
 public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, CreateKtCodesDialog.OnOKListener {
@@ -139,7 +138,7 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
     }
 
     @Override
-    public void onOK(String text, boolean onlyVh, int type) {
+    public void onOK(String text, boolean onlyVh, int type, boolean reactive) {
 
         Project project = directory.getProject();
         PsiFileFactory factory = PsiFileFactory.getInstance(project);
@@ -161,7 +160,8 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
         SourceFilesGenerator generator;
 
         //String rPackage, String baseVhPackage, String baseVhName
-        Model model = new Model(text, onlyVh, rPackage, baseVhPackage, baseVhName, baseKtVhPackage, baseKtVhName);
+        Model model = new Model(text, onlyVh, reactive,
+                rPackage, baseVhPackage, baseVhName, baseKtVhPackage, baseKtVhName);
         generator = new SingleFileGenerator(text + "Widget.kt", fileSaver);
 
         generator.setListener(filesCount -> {

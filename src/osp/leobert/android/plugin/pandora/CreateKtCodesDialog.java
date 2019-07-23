@@ -22,6 +22,7 @@ public class CreateKtCodesDialog extends JDialog {
     private JCheckBox onlyItemViewBinderCheckBox;
     private JRadioButton kotlinRadioButton;
     private JRadioButton useKotlinAndKtPandoraRadioButton;
+    private JCheckBox reactiveCheckBox;
 
     private Integer type = 1;
 
@@ -42,7 +43,7 @@ public class CreateKtCodesDialog extends JDialog {
         });
         kotlinRadioButton.addActionListener(e -> type = 1);
         useKotlinAndKtPandoraRadioButton.addActionListener(
-                e-> type = 2
+                e -> type = 2
         );
 
         contentPane.registerKeyboardAction(e -> onCancel(),
@@ -50,6 +51,8 @@ public class CreateKtCodesDialog extends JDialog {
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         kotlinRadioButton.setSelected(true);
+
+        reactiveCheckBox.setSelected(true);
         contentPane.requestFocus();
     }
 
@@ -57,9 +60,8 @@ public class CreateKtCodesDialog extends JDialog {
     private OnOKListener onOKListener;
 
 
-
     public interface OnOKListener {
-        void onOK(String text, boolean and, int type);
+        void onOK(String text, boolean and, int type, boolean reactive);
     }
 
 
@@ -75,7 +77,8 @@ public class CreateKtCodesDialog extends JDialog {
 
     private void onOK() {
         if (onOKListener != null) {
-            onOKListener.onOK(typeName.getText(), onlyItemViewBinderCheckBox.isSelected(),type);
+            onOKListener.onOK(typeName.getText(), onlyItemViewBinderCheckBox.isSelected(), type,
+                    reactiveCheckBox.isSelected());
         }
         dispose();
     }

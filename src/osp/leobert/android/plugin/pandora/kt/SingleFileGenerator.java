@@ -30,21 +30,35 @@ public class SingleFileGenerator extends KotlinFileGenerator {
 
         Model model = models.get(0);
 
-        resultFileContent.append(vh_import).append("\n\n");
-        if (!model.onlyVh) {
-            resultFileContent.append(vo_import).append("\n\n\n");
-            resultFileContent.append(vo_interface).append("\n\n\n");
+        resultFileContent.append(vh_import).append("\n");
+
+        if (model.reactive) {
+            resultFileContent.append(reactive_import).append("\n");
+
+            if (!model.onlyVh) {
+                resultFileContent.append(vo_import).append("\n");
+                resultFileContent.append(reactive_vo_interface).append("\n");
+            }
+
+            resultFileContent.append(reactive_vh_creator_template).append("\n");
+
+        } else {
+
+            if (!model.onlyVh) {
+                resultFileContent.append(vo_import).append("\n");
+                resultFileContent.append(vo_interface).append("\n\n");
+            }
+            resultFileContent.append(vh_creator_template).append("\n\n");
         }
 
-        resultFileContent.append(vh_creator_template).append("\n\n\n");
 
-        resultFileContent.append(vh_item_interact).append("\n\n\n");
+        resultFileContent.append(vh_item_interact).append("\n\n");
 
 
         String tmp = resultFileContent.toString();
 
         if (packageName != null)
-            tmp = tmp.replace("WIDGET_PACKAGE",packageName);
+            tmp = tmp.replace("WIDGET_PACKAGE", packageName);
 
         if (model.prefix != null) {
             tmp = tmp.replace("${NAME}", model.prefix);

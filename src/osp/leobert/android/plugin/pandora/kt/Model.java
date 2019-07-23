@@ -17,10 +17,15 @@ public class Model {
     public final String baseKtVhPackage;
     public final String baseKtVhName;
 
-    public Model(String prefix, boolean onlyVh, String rPackage, String baseVhPackage, String baseVhName, String baseKtVhPackage, String baseKtVhName) {
+    public final boolean reactive;
+
+    public Model(String prefix, boolean onlyVh, boolean reactive,
+                 String rPackage, String baseVhPackage, String baseVhName,
+                 String baseKtVhPackage, String baseKtVhName) {
         this.prefix = prefix;
         this.onlyVh = onlyVh;
         this.rPackage = rPackage;
+        this.reactive = reactive;
         this.baseVhPackage = baseVhPackage;
         this.baseVhName = baseVhName;
         this.baseKtVhPackage = baseKtVhPackage;
