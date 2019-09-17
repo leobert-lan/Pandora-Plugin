@@ -45,7 +45,7 @@ import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
 public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, CreateKtCodesDialog.OnOKListener {
 
     public CreateKotlinVHVOFilesAction() {
-        super("GenerateKotlinClassFile");
+        super("Pandora-Kotlin");
     }
 
     private CreateKtCodesDialog dialog;

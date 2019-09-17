@@ -11,6 +11,7 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
     public static final String reactive_import = "import osp.leobert.android.pandora.rv.ReactiveData\n" +
             "import osp.leobert.android.pandora.rv.IReactiveViewHolder\n" +
             "import androidx.databinding.Observable\n" +
+            "import androidx.databinding.BaseObservable\n"+
             "import osp.leobert.android.pandora.rv.IViewHolder\n";
 
     public static final String vo_interface =
@@ -26,7 +27,28 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
                     "    override fun setToViewHolder(viewHolder: BASE_VH_NAME<${NAME}VO2>?) {\n" +
                     "        viewHolder?.setData(this)\n" +
                     "    }\n" +
-                    "}";
+                    "\n" +
+                    "    class Impl : ${NAME}VO2 {\n" +
+                    "        private var viewHolder: IReactiveViewHolder<${NAME}VO2>? = null\n" +
+                    "\n" +
+                    "        private val observable = BaseObservable().apply {\n" +
+                    "            addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {\n" +
+                    "                override fun onPropertyChanged(sender: Observable?, propertyId: Int) {\n" +
+                    "                    viewHolder?.onPropertyChanged(sender ?: this@apply, this@Impl, propertyId)\n" +
+                    "                }\n" +
+                    "\n" +
+                    "            })\n" +
+                    "        }\n" +
+                    "\n" +
+                    "        override fun bindReactiveVh(viewHolder: IReactiveViewHolder<${NAME}VO2>?) {\n" +
+                    "            this.viewHolder = viewHolder\n" +
+                    "        }\n" +
+                    "\n" +
+                    "        override fun unbindReactiveVh() {\n" +
+                    "            viewHolder = null\n" +
+                    "        }\n" +
+                    "    }\n"+
+                    "}\n";
 
     public static final String vh_import = "import android.view.LayoutInflater\n" +
             "import android.view.ViewGroup\n" +
@@ -58,6 +80,7 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
                     "                super.setData(data)\n" +
                     "                mData = data\n" +
                     "                binding.vo = data\n" +
+                    "                binding.executePendingBindings()\n" +
                     "            }\n" +
                     "        }\n" +
                     "\n" +
@@ -84,6 +107,7 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
                     "                super.setData(data)\n" +
                     "                mData = data\n" +
                     "                binding.vo = data\n" +
+                    "                binding.executePendingBindings()\n" +
                     "            }\n" +
                     "\n" +
                     "            override fun getReactiveDataIfExist(): ReactiveData<out ${NAME}VO2, out IViewHolder<${NAME}VO2>>? = mData\n" +

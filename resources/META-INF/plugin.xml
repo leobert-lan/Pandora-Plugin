@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.your.company.unique.plugin.id</id>
     <name>Pandora-VhVo-Generator</name>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
     <vendor email="leobert.l@hotmail.com" url="https://github.com/leobert-lan">Leobert</vendor>
 
     <description><![CDATA[
@@ -40,7 +40,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.0.4:add supporting for reactive vo vh models
+      1.0.6:fix some bug and add more template codes
     ]]>
     </change-notes>
 

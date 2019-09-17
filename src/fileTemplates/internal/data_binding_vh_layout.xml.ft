@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- android:onClick="@{(view)->itemInteract.changeData(vh.getAdapterPosition(),item)}"-->
+        <!-- android:onClick="@{(view)->itemInteract.foo(vh.getAdapterPosition(),vo)}"-->
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="PREFIX" />
     </FrameLayout>
