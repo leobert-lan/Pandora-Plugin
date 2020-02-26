@@ -59,7 +59,8 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
             "import BASE_KT_VH_PACKAGE.BASE_KT_VH_NAME\n" +
             "import osp.leobert.android.tracker.BuryPoint\n" +
             "import osp.leobert.android.tracker.BuryPointContextWrapper\n" +
-            "import java.util.*\n";
+            "import java.util.*\n" +
+            "import android.util.Pair\n";
 
 
     public static final String vh_item_interact =
