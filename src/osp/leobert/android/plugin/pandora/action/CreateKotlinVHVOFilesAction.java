@@ -15,26 +15,17 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
-
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-
 import osp.leobert.android.plugin.pandora.CreateKtCodesDialog;
-import osp.leobert.android.plugin.pandora.kt.FileSaver;
-import osp.leobert.android.plugin.pandora.kt.IDEFileSaver;
-import osp.leobert.android.plugin.pandora.kt.KotlinFileType;
-import osp.leobert.android.plugin.pandora.kt.Model;
-import osp.leobert.android.plugin.pandora.kt.SingleFileGenerator;
-import osp.leobert.android.plugin.pandora.kt.SourceFilesGenerator;
+import osp.leobert.android.plugin.pandora.kt.*;
 import osp.leobert.android.plugin.pandora.util.Properties;
 import osp.leobert.android.plugin.pandora.util.Utils;
 
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_NAME;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_PACKAGE;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_NAME;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_PACKAGE;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collections;
+
+import static osp.leobert.android.plugin.pandora.util.Utils.*;
 
 /**
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora </p>
@@ -44,11 +35,81 @@ import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
  */
 public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, CreateKtCodesDialog.OnOKListener {
 
+//    public static void refreshConfig(@NotNull AnActionEvent event) {
+//        Project project = event.getProject();
+//        if (project == null) return;
+//
+//        DataContext dataContext = event.getDataContext();
+//        final Module module = DataKeys.MODULE.getData(dataContext);
+//        if (module == null) return;
+//
+//        ModuleRootManager root = ModuleRootManager.getInstance(module);
+//        PsiDirectory directory = null;
+//
+//        for (VirtualFile file : root.getSourceRoots()) {
+//            directory = PsiManager.getInstance(project).findDirectory(file);
+//        }
+//        if (directory != null)
+//            parseConfig(getModuleDir(directory));
+//    }
+
+    private /*static*/ VirtualFile getModuleDir(PsiDirectory directory) {
+        return Utils.getModuleDir(directory);
+    }
+
+
+    private /*static*/ Properties parseConfig(VirtualFile moduleDir) {
+        return Utils.parseConfig(moduleDir);
+    }
+
+
+    private /*static*/ void initConfig(final PsiDirectory dir) {
+        try {
+            VirtualFile projectFolder = getModuleDir(dir);
+            if (projectFolder != null) {
+                Properties configProp = parseConfig(projectFolder);
+                if (configProp != null) {
+                    rPackage = configProp.getProperty(CONF_R_PACKAGE,
+                            "com.jdd.motorfans");
+
+                    baseVhPackage = configProp.getProperty(CONF_BASE_VH_PACKAGE,
+                            "com.jdd.motorfans.common.base.adapter.vh2");
+
+                    baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
+                            "AbsViewHolder2");
+
+                    baseKtVhPackage = configProp.getProperty(CONF_BASE_KT_VH_PACKAGE,
+                            "com.jdd.motorfans.common.base.adapter.vh2");
+
+                    baseKtVhName = configProp.getProperty(CONF_BASE_KT_VH_NAME,
+                            "AbsViewHolder2");
+
+                    templateVhImport = configProp.getProperty(TEMPLATE_VH_IMPORT, null);
+                    templateVhCreator = configProp.getProperty(TEMPLATE_VH_CREATOR, null);
+                    templateReactiveVhCreator = configProp.getProperty(TEMPLATE_REACTIVE_VH_CREATOR, null);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private /*static*/ String rPackage;
+    private /*static*/ String baseVhPackage;
+    private /*static*/ String baseVhName;
+    private /*static*/ String baseKtVhPackage;
+    private /*static*/ String baseKtVhName;
+
+    private String templateVhImport;
+    private String templateVhCreator;
+    private String templateReactiveVhCreator;
+
+
     public CreateKotlinVHVOFilesAction() {
         super("Pandora-Kotlin");
     }
-
-    private CreateKtCodesDialog dialog;
 
     private PsiDirectory directory;
 
@@ -76,60 +137,15 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
             }
         }
 
-        dialog = new CreateKtCodesDialog();
+        CreateKtCodesDialog dialog = new CreateKtCodesDialog();
         dialog.setOnOKListener(this);
+        dialog.setOnRefreshListener(e -> initConfig(directory));
         dialog.setTitle("Generate Pandora VH and VO Codes");
         dialog.pack();
         dialog.setLocationRelativeTo(WindowManager.getInstance().getFrame(event.getProject()));
         dialog.setVisible(true);
         dialog.requestFocusInWindow();
     }
-
-
-    private VirtualFile getModuleDir(PsiDirectory directory) {
-        return Utils.getModuleDir(directory);
-    }
-
-
-    private Properties parseConfig(VirtualFile moduleDir) {
-        return Utils.parseConfig(moduleDir);
-    }
-
-
-    private void initConfig(final PsiDirectory dir) {
-        try {
-            VirtualFile projectFolder = getModuleDir(dir);
-            if (projectFolder != null) {
-                Properties configProp = parseConfig(projectFolder);
-                if (configProp != null) {
-                    rPackage = configProp.getProperty(CONF_R_PACKAGE,
-                            "com.jdd.motorfans");
-
-                    baseVhPackage = configProp.getProperty(CONF_BASE_VH_PACKAGE,
-                            "com.jdd.motorfans.common.base.adapter.vh2");
-
-                    baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
-                            "AbsViewHolder2");
-
-                    baseKtVhPackage = configProp.getProperty(CONF_BASE_KT_VH_PACKAGE,
-                            "com.jdd.motorfans.common.base.adapter.vh2");
-
-                    baseKtVhName = configProp.getProperty(CONF_BASE_KT_VH_NAME,
-                            "AbsViewHolder2");
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private String rPackage;
-    private String baseVhPackage;
-    private String baseVhName;
-    private String baseKtVhPackage;
-    private String baseKtVhName;
 
 
     @Override
@@ -148,29 +164,27 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
         FileSaver fileSaver = new IDEFileSaver(factory, directory, KotlinFileType.INSTANCE);
         initConfig(directory);
 
-        fileSaver.setListener(fileName -> {
-//            int ok = Messages.showOkCancelDialog(
-////                    textResources.getReplaceDialogMessage(fileName),
-////                    textResources.getReplaceDialogTitle(),
-////                    UIUtil.getQuestionIcon());
-////            return ok == 0;
-            return true;
-        });
+        fileSaver.setListener(fileName -> true);
 
         SourceFilesGenerator generator;
 
         //String rPackage, String baseVhPackage, String baseVhName
         Model model = new Model(text, onlyVh, reactive,
                 rPackage, baseVhPackage, baseVhName, baseKtVhPackage, baseKtVhName);
+        model.templateVhImport = this.templateVhImport;
+        model.templateVhCreator = this.templateVhCreator;
+        model.templateReactiveVhCreator = this.templateReactiveVhCreator;
+
+
         generator = new SingleFileGenerator(text + "Widget.kt", fileSaver);
 
         generator.setListener(filesCount -> {
-                }
 //                NotificationsHelper.showNotification(directory.getProject(),
 //                        textResources.getGeneratedFilesMessage(filesCount))
+                }
         );
 
-        generator.generateFiles(packageName, Arrays.asList(model));
+        generator.generateFiles(packageName, Collections.singletonList(model));
 
     }
 

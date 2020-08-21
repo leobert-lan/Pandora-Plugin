@@ -11,7 +11,6 @@ import java.io.File;
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora.util </p>
  * <p><b>Project:</b> Pandora-Plugin </p>
  * <p><b>Classname:</b> Utils </p>
- * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2019/4/29.
  */
 public class Utils {
@@ -21,6 +20,10 @@ public class Utils {
     public static final String CONF_BASE_VH_NAME = "BASE_VH_NAME";
     public static final String CONF_BASE_KT_VH_PACKAGE = "BASE_KT_VH_PACKAGE";
     public static final String CONF_BASE_KT_VH_NAME = "BASE_KT_VH_NAME";
+
+    public static final String TEMPLATE_VH_IMPORT = "TEMPLATE_VH_IMPORT";
+    public static final String TEMPLATE_VH_CREATOR = "TEMPLATE_VH_CREATOR";
+    public static final String TEMPLATE_REACTIVE_VH_CREATOR = "TEMPLATE_REACTIVE_VH_CREATOR";
 
     public static VirtualFile getModuleDir(PsiDirectory directory) {
         if (directory == null) return null;

@@ -10,7 +10,6 @@ import com.intellij.psi.PsiFileFactory;
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora.kt </p>
  * <p><b>Project:</b> Pandora-Plugin </p>
  * <p><b>Classname:</b> IDEFileSaver </p>
- * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2019-06-03.
  */
 

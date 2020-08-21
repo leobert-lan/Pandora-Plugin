@@ -1,17 +1,10 @@
 package osp.leobert.android.plugin.pandora;
 
+import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 
 public class CreateKtCodesDialog extends JDialog {
 
@@ -23,6 +16,7 @@ public class CreateKtCodesDialog extends JDialog {
     private JRadioButton kotlinRadioButton;
     private JRadioButton useKotlinAndKtPandoraRadioButton;
     private JCheckBox reactiveCheckBox;
+    private JButton buttonRefresh;
 
     private Integer type = 1;
 
@@ -54,10 +48,17 @@ public class CreateKtCodesDialog extends JDialog {
 
         reactiveCheckBox.setSelected(true);
         contentPane.requestFocus();
+
+        buttonRefresh.addActionListener(e -> {
+            if (onRefreshListener != null)
+                onRefreshListener.actionPerformed(e);
+        });
     }
 
 
     private OnOKListener onOKListener;
+
+    private ActionListener onRefreshListener;
 
 
     public interface OnOKListener {
@@ -69,6 +70,9 @@ public class CreateKtCodesDialog extends JDialog {
         this.onOKListener = onOKListener;
     }
 
+    public void setOnRefreshListener(ActionListener onRefreshListener) {
+        this.onRefreshListener = onRefreshListener;
+    }
 
     public OnOKListener getOnOKListener() {
         return onOKListener;
@@ -86,6 +90,13 @@ public class CreateKtCodesDialog extends JDialog {
 
     private void onCancel() {
         dispose();
+    }
+
+    /**
+     * invoke model and config refresh
+     */
+    private void onRefreshClicked() {
+
     }
 
 

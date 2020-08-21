@@ -6,11 +6,7 @@ import com.google.common.base.CaseFormat;
 import java.util.List;
 
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_NAME;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_PACKAGE;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_NAME;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_VH_PACKAGE;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
+import static osp.leobert.android.plugin.pandora.util.Utils.*;
 
 public class SingleFileGenerator extends KotlinFileGenerator {
 
@@ -19,6 +15,13 @@ public class SingleFileGenerator extends KotlinFileGenerator {
     public SingleFileGenerator(String fileName, FileSaver fileSaver) {
         super(fileSaver);
         this.fileName = fileName;
+    }
+
+    private String check(String a, String b) {
+        if (a == null || a.isEmpty()) {
+            return b;
+        }
+        return a;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class SingleFileGenerator extends KotlinFileGenerator {
 
         Model model = models.get(0);
 
-        resultFileContent.append(vh_import).append("\n");
+        resultFileContent.append(check(model.templateVhImport, vh_import)).append("\n");
 
         if (model.reactive) {
             resultFileContent.append(reactive_import).append("\n");
@@ -40,7 +43,7 @@ public class SingleFileGenerator extends KotlinFileGenerator {
                 resultFileContent.append(reactive_vo_interface).append("\n");
             }
 
-            resultFileContent.append(reactive_vh_creator_template).append("\n");
+            resultFileContent.append(check(model.templateReactiveVhCreator, reactive_vh_creator_template)).append("\n");
 
         } else {
 
@@ -48,7 +51,7 @@ public class SingleFileGenerator extends KotlinFileGenerator {
                 resultFileContent.append(vo_import).append("\n");
                 resultFileContent.append(vo_interface).append("\n\n");
             }
-            resultFileContent.append(vh_creator_template).append("\n\n");
+            resultFileContent.append(check(model.templateVhCreator, vh_creator_template)).append("\n\n");
         }
 
 
@@ -94,6 +97,8 @@ public class SingleFileGenerator extends KotlinFileGenerator {
         else
             tmp = tmp.concat("\n\n baseKtVhName is null");
 
+        while (tmp.contains("~~"))
+            tmp = tmp.replace("~~", "  ");
 
         fileSaver.saveFile(fileName, tmp);
 

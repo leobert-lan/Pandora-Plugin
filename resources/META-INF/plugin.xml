@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.your.company.unique.plugin.id</id>
     <name>Pandora-VhVo-Generator</name>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <vendor email="leobert.l@hotmail.com" url="https://github.com/leobert-lan">Leobert</vendor>
 
     <description><![CDATA[
@@ -40,7 +40,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.0.7:tracker point dispatcher support
+      1.0.8:add supporting for template configuration of ViewHolder creator
     ]]>
     </change-notes>
 

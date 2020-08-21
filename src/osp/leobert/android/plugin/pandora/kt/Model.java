@@ -4,7 +4,6 @@ package osp.leobert.android.plugin.pandora.kt;
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora.kt </p>
  * <p><b>Project:</b> Pandora-Plugin </p>
  * <p><b>Classname:</b> Model </p>
- * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2019-06-03.
  */
 public class Model {
@@ -18,6 +17,10 @@ public class Model {
     public final String baseKtVhName;
 
     public final boolean reactive;
+
+    public String templateVhImport;
+    public String templateVhCreator;
+    public String templateReactiveVhCreator;
 
     public Model(String prefix, boolean onlyVh, boolean reactive,
                  String rPackage, String baseVhPackage, String baseVhName,
