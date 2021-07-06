@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.your.company.unique.plugin.id</id>
     <name>Pandora-VhVo-Generator</name>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <vendor email="leobert.l@hotmail.com" url="https://github.com/leobert-lan">Leobert</vendor>
 
     <description><![CDATA[
@@ -96,6 +96,15 @@
         <intentionAction order="first">
             <className>osp.leobert.android.plugin.pandora.intention.GenerateKtDataBindingLayoutIntention</className>
         </intentionAction>
+
+        <applicationConfigurable instance="osp.leobert.android.plugin.pandora.SettingPage"/>
     </extensions>
+
+    <application-components>
+        <!--将持久化组件声明为component-->
+        <component>
+            <implementation-class>osp.leobert.android.plugin.pandora.persist.PandoraPersist</implementation-class>
+        </component>
+    </application-components>
 
 </idea-plugin>
