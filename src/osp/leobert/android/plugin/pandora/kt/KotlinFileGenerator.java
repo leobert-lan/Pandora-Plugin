@@ -50,15 +50,13 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
                     "    }\n" +
                     "}\n";
 
-    public static final String vh_import = "import osp.leobert.android.tracker.LayoutInflaterWrapper\n" +
+    public static final String vh_import = "import android.view.LayoutInflater\n" +
             "import android.view.ViewGroup\n" +
             "import androidx.databinding.DataBindingUtil\n" +
             "import R_PACKAGE.databinding.AppVh${NAME}Binding\n" +
             "import osp.leobert.android.pandora.rv.ViewHolderCreator\n" +
             "import R_PACKAGE.R\n" +
             "import BASE_KT_VH_PACKAGE.BASE_KT_VH_NAME\n" +
-            "import osp.leobert.android.tracker.BuryPoint\n" +
-            "import osp.leobert.android.tracker.BuryPointContextWrapper\n" +
             "import java.util.*\n" +
             "import android.util.Pair\n";
 
@@ -69,25 +67,15 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
                     "}\n";
 
     public static final String vh_creator_template =
-            "class ${NAME}VHCreator(private val itemInteract: ${NAME}ItemInteract?,private val parentContext: BuryPointContextWrapper) : ViewHolderCreator() {\n" +
+            "class ${NAME}VHCreator(private val itemInteract: ${NAME}ItemInteract?) : ViewHolderCreator() {\n" +
                     "\n" +
                     "    override fun createViewHolder(parent: ViewGroup): DataBindingViewHolder<${NAME}VO2, AppVh${NAME}Binding> {\n" +
                     "        val binding = DataBindingUtil.inflate<AppVh${NAME}Binding>(\n" +
-                    "            LayoutInflaterWrapper.from(parent.context),\n" +
+                    "            LayoutInflater.from(parent.context),\n" +
                     "            R.layout.app_vh_WIDGET_PREFIXLOWER_NAME, parent, false\n" +
                     "        )\n" +
                     "\n" +
                     "        val vh = object : DataBindingViewHolder<${NAME}VO2, AppVh${NAME}Binding>(binding) {\n" +
-                    "            val buryPointContext = object : BuryPointContextWrapper() {\n" +
-                    "                override fun createContextDataInternal(pointKey: String?): MutableList<Pair<String, String>>? {\n" +
-                    "                    return Collections.emptyList()\n" +
-                    "                }\n" +
-                    "            }\n" +
-                    "\n" +
-                    "            init {\n" +
-                    "                buryPointContext.wrapBy(parentContext)\n" +
-                    "                binding.bp = buryPointContext\n" +
-                    "            }\n" +
                     "\n" +
                     "            var mData: ${NAME}VO2? = null\n" +
                     "\n" +
@@ -107,25 +95,15 @@ public abstract class KotlinFileGenerator extends SourceFilesGenerator {
                     "}\n";
 
     public static final String reactive_vh_creator_template =
-            "class ${NAME}VHCreator(private val itemInteract: ${NAME}ItemInteract?,private val parentContext: BuryPointContextWrapper) : ViewHolderCreator() {\n" +
+            "class ${NAME}VHCreator(private val itemInteract: ${NAME}ItemInteract?) : ViewHolderCreator() {\n" +
                     "\n" +
                     "    override fun createViewHolder(parent: ViewGroup): DataBindingViewHolder<${NAME}VO2, AppVh${NAME}Binding> {\n" +
                     "        val binding = DataBindingUtil.inflate<AppVh${NAME}Binding>(\n" +
-                    "            LayoutInflaterWrapper.from(parent.context),\n" +
+                    "            LayoutInflater.from(parent.context),\n" +
                     "            R.layout.app_vh_WIDGET_PREFIXLOWER_NAME, parent, false\n" +
                     "        )\n" +
                     "\n" +
                     "        val vh = object : DataBindingViewHolder<${NAME}VO2, AppVh${NAME}Binding>(binding),IReactiveViewHolder<${NAME}VO2> {\n" +
-                    "            val buryPointContext = object : BuryPointContextWrapper() {\n" +
-                    "                override fun createContextDataInternal(pointKey: String?): MutableList<Pair<String, String>>? {\n" +
-                    "                    return Collections.emptyList()\n" +
-                    "                }\n" +
-                    "            }\n" +
-                    "\n" +
-                    "            init {\n" +
-                    "                buryPointContext.wrapBy(parentContext)\n" +
-                    "                binding.bp = buryPointContext\n" +
-                    "            }\n" +
                     "            var mData: ${NAME}VO2? = null\n" +
                     "\n" +
                     "            override fun setData(data: ${NAME}VO2?) {\n" +
