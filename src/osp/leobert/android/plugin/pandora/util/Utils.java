@@ -25,6 +25,9 @@ public class Utils {
     public static final String TEMPLATE_VH_CREATOR = "TEMPLATE_VH_CREATOR";
     public static final String TEMPLATE_REACTIVE_VH_CREATOR = "TEMPLATE_REACTIVE_VH_CREATOR";
 
+    public static final String KT_TEMPLATE = "KT_TEMPLATE";
+    public static final String KT_TEMPLATE_REACTIVE = "KT_TEMPLATE_REACTIVE";
+
     public static VirtualFile getModuleDir(PsiDirectory directory) {
         if (directory == null) return null;
         PsiDirectory parent = directory.getParent();

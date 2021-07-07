@@ -22,6 +22,12 @@ public class Model {
     public String templateVhCreator;
     public String templateReactiveVhCreator;
 
+
+    public String templateKt;
+    public String templateKtReactive;
+
+    public boolean isPandoraKt = false;
+
     public Model(String prefix, boolean onlyVh, boolean reactive,
                  String rPackage, String baseVhPackage, String baseVhName,
                  String baseKtVhPackage, String baseKtVhName) {

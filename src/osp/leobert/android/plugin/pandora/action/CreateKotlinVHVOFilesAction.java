@@ -18,11 +18,10 @@ import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import org.jetbrains.annotations.NotNull;
 import osp.leobert.android.plugin.pandora.CreateKtCodesDialog;
 import osp.leobert.android.plugin.pandora.kt.*;
+import osp.leobert.android.plugin.pandora.ui.Notify;
 import osp.leobert.android.plugin.pandora.util.Properties;
 import osp.leobert.android.plugin.pandora.util.Utils;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 
 import static osp.leobert.android.plugin.pandora.util.Utils.*;
@@ -35,38 +34,22 @@ import static osp.leobert.android.plugin.pandora.util.Utils.*;
  */
 public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, CreateKtCodesDialog.OnOKListener {
 
-//    public static void refreshConfig(@NotNull AnActionEvent event) {
-//        Project project = event.getProject();
-//        if (project == null) return;
-//
-//        DataContext dataContext = event.getDataContext();
-//        final Module module = DataKeys.MODULE.getData(dataContext);
-//        if (module == null) return;
-//
-//        ModuleRootManager root = ModuleRootManager.getInstance(module);
-//        PsiDirectory directory = null;
-//
-//        for (VirtualFile file : root.getSourceRoots()) {
-//            directory = PsiManager.getInstance(project).findDirectory(file);
-//        }
-//        if (directory != null)
-//            parseConfig(getModuleDir(directory));
-//    }
 
-    private /*static*/ VirtualFile getModuleDir(PsiDirectory directory) {
+    private VirtualFile getModuleDir(PsiDirectory directory) {
         return Utils.getModuleDir(directory);
     }
 
 
-    private /*static*/ Properties parseConfig(VirtualFile moduleDir) {
+    private Properties parseConfig(VirtualFile moduleDir) {
         return Utils.parseConfig(moduleDir);
     }
 
 
-    private /*static*/ void initConfig(final PsiDirectory dir) {
+    private void initConfig(final PsiDirectory dir) {
         try {
             VirtualFile projectFolder = getModuleDir(dir);
             if (projectFolder != null) {
+                Notify.show("加载配置：" + projectFolder.getCanonicalPath());
                 Properties configProp = parseConfig(projectFolder);
                 if (configProp != null) {
                     rPackage = configProp.getProperty(CONF_R_PACKAGE,
@@ -87,24 +70,34 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
                     templateVhImport = configProp.getProperty(TEMPLATE_VH_IMPORT, null);
                     templateVhCreator = configProp.getProperty(TEMPLATE_VH_CREATOR, null);
                     templateReactiveVhCreator = configProp.getProperty(TEMPLATE_REACTIVE_VH_CREATOR, null);
+
+                    templateKt = configProp.getProperty(KT_TEMPLATE, null);
+                    templateKtReactive = configProp.getProperty(KT_TEMPLATE_REACTIVE, null);
+
                 }
+            } else {
+                Notify.show("加载配置失败：无文件");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            Notify.show("加载配置失败：" + e.getLocalizedMessage());
         }
     }
 
 
-    private /*static*/ String rPackage;
-    private /*static*/ String baseVhPackage;
-    private /*static*/ String baseVhName;
-    private /*static*/ String baseKtVhPackage;
-    private /*static*/ String baseKtVhName;
+    private String rPackage;
+    private String baseVhPackage;
+    private String baseVhName;
+    private String baseKtVhPackage;
+    private String baseKtVhName;
 
     private String templateVhImport;
     private String templateVhCreator;
     private String templateReactiveVhCreator;
+
+    private String templateKt;
+    private String templateKtReactive;
 
 
     public CreateKotlinVHVOFilesAction() {
@@ -175,12 +168,16 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
         model.templateVhCreator = this.templateVhCreator;
         model.templateReactiveVhCreator = this.templateReactiveVhCreator;
 
+        model.isPandoraKt = type == 2;
 
-        generator = new SingleFileGenerator(text + "Widget.kt", fileSaver);
+        model.templateKt = templateKt;
+        model.templateKtReactive = templateKtReactive;
+
+
+        generator = new PandoraWidgetGenerator(text + "Widget.kt", fileSaver);
 
         generator.setListener(filesCount -> {
-//                NotificationsHelper.showNotification(directory.getProject(),
-//                        textResources.getGeneratedFilesMessage(filesCount))
+                    Notify.show("generate success");
                 }
         );
 
