@@ -27,15 +27,14 @@ public class PandoraTemplate implements IWidgetTemplate {
             "import osp.leobert.android.pandora.rv.IViewHolder\n";
 
     public static final String vo_interface =
-            "interface ${NAME}VO2 : DataSet.Data<${NAME}VO2, BASE_VH_NAME<${NAME}VO2>> {\n" +
+            "interface ${NAME}VO2 : DataSet.Data {\n" +
                     "    override fun setToViewHolder(viewHolder: BASE_VH_NAME<${NAME}VO2>?) {\n" +
                     "        viewHolder?.setData(this)\n" +
                     "    }\n" +
                     "}";
 
     public static final String reactive_vo_interface =
-            "interface ${NAME}VO2 : DataSet.Data<${NAME}VO2, BASE_VH_NAME<${NAME}VO2>>," +
-                    " ReactiveData<${NAME}VO2,BASE_VH_NAME<${NAME}VO2>>  {\n" +
+            "interface ${NAME}VO2 : DataSet.Data, ReactiveData<${NAME}VO2>  {\n" +
                     "    override fun setToViewHolder(viewHolder: BASE_VH_NAME<${NAME}VO2>?) {\n" +
                     "        viewHolder?.setData(this)\n" +
                     "    }\n" +
@@ -125,7 +124,7 @@ public class PandoraTemplate implements IWidgetTemplate {
                     "                binding.executePendingBindings()\n" +
                     "            }\n" +
                     "\n" +
-                    "            override fun getReactiveDataIfExist(): ReactiveData<out ${NAME}VO2, out IViewHolder<${NAME}VO2>>? = mData\n" +
+                    "            override fun getReactiveDataIfExist(): ReactiveData<out ${NAME}VO2>? = mData\n" +
                     "\n" +
                     "            override fun accept(visitor: IViewHolder.Visitor) { visitor.visit(this)}\n" +
                     "\n" +

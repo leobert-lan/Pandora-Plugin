@@ -23,6 +23,8 @@ import osp.leobert.android.plugin.pandora.template.LayoutFileTemplateDescriptorF
 import osp.leobert.android.plugin.pandora.ui.UiComponentFacade;
 import osp.leobert.android.plugin.pandora.util.XmlLayoutUtils;
 
+import java.util.Locale;
+
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
 import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_NAME;
 import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_PACKAGE;
@@ -122,11 +124,9 @@ public class GenerateKtDataBindingLayoutIntention extends GenericIntention {
             if (projectFolder != null) {
                 osp.leobert.android.plugin.pandora.util.Properties configProp = parseConfig(projectFolder);
                 if (configProp != null) {
-                    rPackage = configProp.getProperty(CONF_R_PACKAGE,
-                            "com.jdd.motorfans");
 
                     baseVhPackage = configProp.getProperty(CONF_BASE_KT_VH_PACKAGE,
-                            "com.jdd.motorfans.common.base.adapter.vh2");
+                            "missing missing CONF_BASE_KT_VH_PACKAGE");
 
                     baseVhName = configProp.getProperty(CONF_BASE_KT_VH_NAME,
                             "AbsViewHolder2");
@@ -139,8 +139,7 @@ public class GenerateKtDataBindingLayoutIntention extends GenericIntention {
     }
 
 
-    private String rPackage = "com.jdd.motorfans";
-    private String baseVhPackage = "com.jdd.motorfans.common.base.adapter.vh2";
+    private String baseVhPackage = "missing CONF_BASE_KT_VH_PACKAGE";
     private String baseVhName = "AbsViewHolder2";
 
 

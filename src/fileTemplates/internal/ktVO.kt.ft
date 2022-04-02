@@ -5,7 +5,7 @@ import BASE_VH_PACKAGE.BASE_VH_NAME;
 
 import osp.leobert.android.pandora.rv.DataSet;
 
-interface ${NAME}VO2 : DataSet.Data<${NAME}VO2, AbsViewHolder2<${NAME}VO2>> {
+interface ${NAME}VO2 : DataSet.Data {
     override fun setToViewHolder(viewHolder: AbsViewHolder2<${NAME}VO2>?) {
         viewHolder?.setData(this)
     }

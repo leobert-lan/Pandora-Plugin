@@ -183,7 +183,7 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
         }
 
         private final String INNER_VO_TEMPLATE =
-                "public interface ${NAME}VO extends DataSet.Data<DataSet.Data, BASE_VH_NAME<DataSet.Data>> {\n" +
+                "public interface ${NAME}VO extends DataSet.Data {\n" +
                         "\n" +
                         "}";
 
