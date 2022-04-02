@@ -99,13 +99,13 @@ public class CreateInnerItemCodesAction extends BaseGenerateAction implements Cr
                     Properties configProp = parseConfig(projectFolder);
                     if (configProp != null) {
                         rPackage = configProp.getProperty(CONF_R_PACKAGE,
-                                "com.jdd.motorfans");
+                                "missing R_PACKAGE");
 
                         baseVhPackage = configProp.getProperty(CONF_BASE_VH_PACKAGE,
-                                "com.jdd.motorfans.common.base.adapter.vh2");
+                                "missing BASE_VH_PACKAGE");
 
                         baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
-                                "AbsViewHolder2");
+                                "missing BASE_VH_NAME");
                     }
                 }
 

@@ -41,4 +41,23 @@ public class Model {
         this.baseKtVhName = baseKtVhName;
     }
 
+    @Override
+    public String toString() {
+        return "Model{" +
+                "prefix='" + prefix + '\'' +
+                ", onlyVh=" + onlyVh +
+                ", rPackage='" + rPackage + '\'' +
+                ", baseVhPackage='" + baseVhPackage + '\'' +
+                ", baseVhName='" + baseVhName + '\'' +
+                ", baseKtVhPackage='" + baseKtVhPackage + '\'' +
+                ", baseKtVhName='" + baseKtVhName + '\'' +
+                ", reactive=" + reactive +
+                ", templateVhImport='" + templateVhImport + '\'' +
+                ", templateVhCreator='" + templateVhCreator + '\'' +
+                ", templateReactiveVhCreator='" + templateReactiveVhCreator + '\'' +
+                ", templateKt='" + templateKt + '\'' +
+                ", templateKtReactive='" + templateKtReactive + '\'' +
+                ", isPandoraKt=" + isPandoraKt +
+                '}';
+    }
 }

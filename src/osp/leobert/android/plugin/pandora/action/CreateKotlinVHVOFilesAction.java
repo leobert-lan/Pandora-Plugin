@@ -53,19 +53,27 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
                 Properties configProp = parseConfig(projectFolder);
                 if (configProp != null) {
                     rPackage = configProp.getProperty(CONF_R_PACKAGE,
-                            "com.jdd.motorfans");
+                            "missing R_PACKAGE");
 
                     baseVhPackage = configProp.getProperty(CONF_BASE_VH_PACKAGE,
-                            "com.jdd.motorfans.common.base.adapter.vh2");
+                            "missing BASE_VH_PACKAGE");
 
                     baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
-                            "AbsViewHolder2");
+                            "missing BASE_VH_NAME");
 
                     baseKtVhPackage = configProp.getProperty(CONF_BASE_KT_VH_PACKAGE,
-                            "com.jdd.motorfans.common.base.adapter.vh2");
+                            "missing BASE_KT_VH_PACKAGE");
 
                     baseKtVhName = configProp.getProperty(CONF_BASE_KT_VH_NAME,
-                            "AbsViewHolder2");
+                            "missing BASE_KT_VH_NAME");
+
+                    String log = "R_PACKAGE:" + rPackage + "\n" +
+                            "BASE_VH_PACKAGE:" + baseVhPackage + "\n" +
+                            "BASE_VH_NAME:" + baseVhName + "\n" +
+                            "BASE_KT_VH_PACKAGE:" + baseKtVhPackage + "\n" +
+                            "BASE_KT_VH_NAME:" + baseKtVhName + "\n";
+                    Notify.show("加载配置摘要：\n" + log);
+
 
                     templateVhImport = configProp.getProperty(TEMPLATE_VH_IMPORT, null);
                     templateVhCreator = configProp.getProperty(TEMPLATE_VH_CREATOR, null);
@@ -149,6 +157,7 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
     @Override
     public void onOK(String text, boolean onlyVh, int type, boolean reactive) {
 
+
         Project project = directory.getProject();
         PsiFileFactory factory = PsiFileFactory.getInstance(project);
         PsiDirectoryFactory directoryFactory = PsiDirectoryFactory.getInstance(directory.getProject());
@@ -164,6 +173,8 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
         //String rPackage, String baseVhPackage, String baseVhName
         Model model = new Model(text, onlyVh, reactive,
                 rPackage, baseVhPackage, baseVhName, baseKtVhPackage, baseKtVhName);
+        Notify.show("准备生成："+ model);
+
         model.templateVhImport = this.templateVhImport;
         model.templateVhCreator = this.templateVhCreator;
         model.templateReactiveVhCreator = this.templateReactiveVhCreator;

@@ -7,30 +7,18 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
-
 import org.jetbrains.annotations.NotNull;
-
 import osp.leobert.android.plugin.pandora.service.EditorService;
 import osp.leobert.android.plugin.pandora.template.LayoutFileTemplateDescriptorFactory;
 import osp.leobert.android.plugin.pandora.ui.UiComponentFacade;
 import osp.leobert.android.plugin.pandora.util.XmlLayoutUtils;
 
-import java.util.Locale;
-
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_NAME;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_BASE_KT_VH_PACKAGE;
-import static osp.leobert.android.plugin.pandora.util.Utils.CONF_R_PACKAGE;
-import static osp.leobert.android.plugin.pandora.util.Utils.getModuleDir;
-import static osp.leobert.android.plugin.pandora.util.Utils.parseConfig;
+import static osp.leobert.android.plugin.pandora.util.Utils.*;
 
 /**
  * <p><b>Package:</b> osp.leobert.android.plugin.pandora.intention </p>
@@ -47,7 +35,7 @@ public class GenerateKtDataBindingLayoutIntention extends GenericIntention {
     @NotNull
     @Override
     public String getText() {
-        return "[Pandora] Generate DataBinding layout of ViewHolder";
+        return "[pandora] generate dataBinding layout of viewHolder";
     }
 
     @Override
@@ -126,10 +114,10 @@ public class GenerateKtDataBindingLayoutIntention extends GenericIntention {
                 if (configProp != null) {
 
                     baseVhPackage = configProp.getProperty(CONF_BASE_KT_VH_PACKAGE,
-                            "missing missing CONF_BASE_KT_VH_PACKAGE");
+                            "missing BASE_KT_VH_PACKAGE");
 
                     baseVhName = configProp.getProperty(CONF_BASE_KT_VH_NAME,
-                            "AbsViewHolder2");
+                            "missing BASE_KT_VH_NAME");
                 }
             }
 
@@ -150,7 +138,6 @@ public class GenerateKtDataBindingLayoutIntention extends GenericIntention {
         if (!directory.isWritable()) {
             HintManager.getInstance().showErrorHint(editor, "Target directory is not writable");
             throw new IllegalStateException("Target directory is not writable");
-//            return;
         }
         String name = "app_vh_" + CaseFormat.UPPER_CAMEL.to(LOWER_UNDERSCORE, foo);
         PsiElement psiFile;

@@ -7,6 +7,7 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import osp.leobert.android.plugin.pandora.ui.Notify;
 
 import java.util.logging.Logger;
 
@@ -39,6 +40,7 @@ public class PandoraPersist implements PersistentStateComponent<PandoraPersist.S
     public void loadState(@NotNull State state) {
         this.state = state;
         Logger.getGlobal().fine("loadState:" + state);
+        Notify.show("loadState:" + state);
     }
 
     public static class State {
