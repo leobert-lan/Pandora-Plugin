@@ -55,11 +55,11 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
                     rPackage = configProp.getProperty(CONF_R_PACKAGE,
                             "missing R_PACKAGE");
 
-                    baseVhPackage = configProp.getProperty(CONF_BASE_VH_PACKAGE,
-                            "missing BASE_VH_PACKAGE");
-
-                    baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
-                            "missing BASE_VH_NAME");
+//                    baseVhPackage = configProp.getProperty(CONF_BASE_VH_PACKAGE,
+//                            "missing BASE_VH_PACKAGE");
+//
+//                    baseVhName = configProp.getProperty(CONF_BASE_VH_NAME,
+//                            "missing BASE_VH_NAME");
 
                     baseKtVhPackage = configProp.getProperty(CONF_BASE_KT_VH_PACKAGE,
                             "missing BASE_KT_VH_PACKAGE");
@@ -68,8 +68,8 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
                             "missing BASE_KT_VH_NAME");
 
                     String log = "R_PACKAGE:" + rPackage + "\n" +
-                            "BASE_VH_PACKAGE:" + baseVhPackage + "\n" +
-                            "BASE_VH_NAME:" + baseVhName + "\n" +
+//                            "BASE_VH_PACKAGE:" + baseVhPackage + "\n" +
+//                            "BASE_VH_NAME:" + baseVhName + "\n" +
                             "BASE_KT_VH_PACKAGE:" + baseKtVhPackage + "\n" +
                             "BASE_KT_VH_NAME:" + baseKtVhName + "\n";
                     Notify.show("加载配置摘要：\n" + log);
@@ -95,8 +95,8 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
 
 
     private String rPackage;
-    private String baseVhPackage;
-    private String baseVhName;
+//    private String baseVhPackage;
+//    private String baseVhName;
     private String baseKtVhPackage;
     private String baseKtVhName;
 
@@ -172,7 +172,7 @@ public class CreateKotlinVHVOFilesAction extends AnAction implements DumbAware, 
 
         //String rPackage, String baseVhPackage, String baseVhName
         Model model = new Model(text, onlyVh, reactive,
-                rPackage, baseVhPackage, baseVhName, baseKtVhPackage, baseKtVhName);
+                rPackage, ""/*不再使用*/, ""/*不再使用*/, baseKtVhPackage, baseKtVhName);
         Notify.show("准备生成："+ model);
 
         model.templateVhImport = this.templateVhImport;

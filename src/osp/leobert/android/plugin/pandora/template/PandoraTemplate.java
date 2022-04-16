@@ -17,8 +17,9 @@ import static osp.leobert.android.plugin.pandora.util.Utils.*;
 public class PandoraTemplate implements IWidgetTemplate {
     public static final String PACKAGE_BLOCK = "package %s\n\n";
 
-    public static final String vo_import = "import BASE_VH_PACKAGE.BASE_VH_NAME\n" +
+    public static final String vo_import =
             "import osp.leobert.android.pandora.rv.DataSet\n";
+//            "import BASE_VH_PACKAGE.BASE_VH_NAME\n" +
 
     public static final String reactive_import = "import osp.leobert.android.pandora.rv.ReactiveData\n" +
             "import osp.leobert.android.pandora.rv.IReactiveViewHolder\n" +
@@ -28,14 +29,14 @@ public class PandoraTemplate implements IWidgetTemplate {
 
     public static final String vo_interface =
             "interface ${NAME}VO2 : DataSet.Data {\n" +
-                    "    override fun setToViewHolder(viewHolder: BASE_VH_NAME<${NAME}VO2>?) {\n" +
+                    "    override fun setToViewHolder(viewHolder: IViewHolder<DataSet.Data>?) {\n" +
                     "        viewHolder?.setData(this)\n" +
                     "    }\n" +
                     "}";
 
     public static final String reactive_vo_interface =
             "interface ${NAME}VO2 : DataSet.Data, ReactiveData<${NAME}VO2>  {\n" +
-                    "    override fun setToViewHolder(viewHolder: BASE_VH_NAME<${NAME}VO2>?) {\n" +
+                    "    override fun setToViewHolder(viewHolder: IViewHolder<DataSet.Data>?) {\n" +
                     "        viewHolder?.setData(this)\n" +
                     "    }\n" +
                     "\n" +
@@ -67,7 +68,6 @@ public class PandoraTemplate implements IWidgetTemplate {
             "import R_PACKAGE.databinding.AppVh${NAME}Binding\n" +
             "import osp.leobert.android.pandora.rv.ViewHolderCreator\n" +
             "import R_PACKAGE.R\n" +
-            "import BASE_KT_VH_PACKAGE.BASE_KT_VH_NAME\n" +
             "import java.util.*\n" +
             "import android.util.Pair\n";
 
@@ -124,7 +124,7 @@ public class PandoraTemplate implements IWidgetTemplate {
                     "                binding.executePendingBindings()\n" +
                     "            }\n" +
                     "\n" +
-                    "            override fun getReactiveDataIfExist(): ReactiveData<out ${NAME}VO2>? = mData\n" +
+                    "            override fun getReactiveDataIfExist(): ReactiveData<${NAME}VO2>? = mData\n" +
                     "\n" +
                     "            override fun accept(visitor: IViewHolder.Visitor) { visitor.visit(this)}\n" +
                     "\n" +
@@ -198,17 +198,17 @@ public class PandoraTemplate implements IWidgetTemplate {
         else
             tmp = tmp.concat("\n\nr package is null");
 
-        //依旧使用最基础VO，使得旧代码可复用 {
-        if (model.baseVhPackage != null)
-            tmp = tmp.replace(CONF_BASE_VH_PACKAGE, model.baseVhPackage);
-        else
-            tmp = tmp.concat("\n\n baseVhPackage is null");
-
-        if (model.baseVhName != null)
-            tmp = tmp.replace(CONF_BASE_VH_NAME, model.baseVhName);
-        else
-            tmp = tmp.concat("\n\n baseVhName is null");
-        //}
+//        //依旧使用最基础VO，使得旧代码可复用 {
+//        if (model.baseVhPackage != null)
+//            tmp = tmp.replace(CONF_BASE_VH_PACKAGE, model.baseVhPackage);
+//        else
+//            tmp = tmp.concat("\n\n baseVhPackage is null");
+//
+//        if (model.baseVhName != null)
+//            tmp = tmp.replace(CONF_BASE_VH_NAME, model.baseVhName);
+//        else
+//            tmp = tmp.concat("\n\n baseVhName is null");
+//        //}
 
         if (model.baseKtVhPackage != null)
             tmp = tmp.replace(CONF_BASE_KT_VH_PACKAGE, model.baseKtVhPackage);
